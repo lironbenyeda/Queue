@@ -1,6 +1,6 @@
 var express = require('express'),
   app = express(),
-  port = process.env.PORT || 3000,
+  port = process.env.PORT || 80,
   mongoose = require('mongoose'),
   Questions = require('./api/models/questionModel'), //created model loading here
   Surveys = require('./api/models/surveyModel'), //created model loading here
@@ -14,6 +14,13 @@ mongoose.connect('mongodb://localhost:27017/Queue', { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+ });
 
 
 var questionRutes = require('./api/routes/questionRoutes'); //importing route
