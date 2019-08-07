@@ -2,6 +2,7 @@ import React from 'react';
 import QuestionForm from './questionForm'
 import Question from './Question';
 import styled from 'styled-components';
+import QuestionApi from '../../api/questionApi'
 
 const QuestionsScreen = styled.div`
 background: white;
@@ -18,19 +19,21 @@ class Questions extends React.Component {
         super(props)
         this.state = {
             asking: false,
-            timeInHebrew:'סנן זמן'
+            timeInHebrew:'סנן זמן',
+            questions:this.props.questions
         }
     }
     questionSent = () => {
         //todo get all then
         this.setState({ asking: false })
+        this.props.reload()
     }
     changeTime = (event) => {
-        console.log(event.target.value)
+       
         
     }
     render() {
-        console.log(this.state.timeInHebrew)
+       
         return (<QuestionsScreen>
            <select onChange={()=>this.changeTime()}>               
                 <option value={'none'}>סנן זמן</option>
@@ -40,13 +43,19 @@ class Questions extends React.Component {
                 <option value={'year'}>השנה</option>
             </select>
             <button onClick={() => this.setState({ asking: true })}>שאל</button>
-            {this.state.asking ? <QuestionForm QuestionSent={() => this.questionSent}></QuestionForm> : null}
+            {this.state.asking ? <QuestionForm QuestionSent={() => this.questionSent()}></QuestionForm> : null}
 
             <div style={{ 'marginTop': '5%' }}>
 
                 {this.props.questions && this.props.questions.length > 0 ?
                     sortQuestionsByRank(this.props.questions).map((question, index) => {
-                        return (<Question key={index} question={question} />)
+                        return (<Question key={index} question={question} updateRank={()=>{
+                            const newQuestions = this.state.questions;
+                            newQuestions[index].rank = newQuestions[index].rank +1
+                            this.setState({
+                                question:newQuestions
+                            })
+                        }} />)
                     })
                     : null}
             </div>

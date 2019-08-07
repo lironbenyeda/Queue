@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {createQuestion} from '../../actions/questionActions';
+import QuestionApi from '../../api/questionApi'
 
 class QuestionForm extends React.Component {
     constructor(props) {
@@ -12,9 +13,12 @@ class QuestionForm extends React.Component {
             question: ''
         }
     }
-    sendQuestion=()=>{        
-        this.props.askQuestion(this.state.question) //todo send
-        this.props.QuestionSent();
+    sendQuestion=()=>{      
+        console.log('sent')  
+        QuestionApi.postQuestion(this.state.question).then((res)=>{
+
+            this.props.QuestionSent()         
+        })
     }
 
     render() {        

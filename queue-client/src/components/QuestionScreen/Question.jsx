@@ -5,7 +5,8 @@ import Paper from '@material-ui/core/Paper';
 import Stars from '@material-ui/icons/Stars';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment'
-import './Question.css'
+import './Question.css';
+import QuestionApi from '../../api/questionApi'
 class Question extends React.Component {
     constructor(props){
         super(props)
@@ -19,7 +20,7 @@ class Question extends React.Component {
         return (
             <Paper style={{ width: '80%', margin: 'auto',marginTop:'5%' }}>
                 <Typography variant="h4">
-                   {question.question}
+                   {question.text}
                 </Typography>
                 <Typography variant="body1" >
                     נשאלה בתאריך :{moment(question.date).format('DD/MM/YYYY')}
@@ -36,10 +37,14 @@ class Question extends React.Component {
                     }}>
                         {question.rank}
                     </span><Stars onClick={()=>{
-                        //todo updaterank
+                        let newQuestion = question
+                        newQuestion.rank = newQuestion.rank+1
+                        QuestionApi.updateQuestion( question)
                         this.setState({
                             starFade:true
-                        })
+                        },()=>QuestionApi.updateQuestion(question).then(()=>{
+                            
+                        }))
                     }}
                     onAnimationEnd={()=>this.setState({starFade:false})}
                     className={this.state.starFade? 'fade':null}                    

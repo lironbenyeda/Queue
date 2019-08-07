@@ -44,7 +44,11 @@ class MainScreen extends React.Component {
     return (
       <Background>
         {screenSetting.questions? 
-        <QuestionScreen questions={removeAnsweredQuestion(this.state.questions)}/>:null}
+        <QuestionScreen reload={()=>QuestionAPI.getQuestions().then(data=>{
+          this.setState({
+            questions:data
+          })
+        })} questions={removeAnsweredQuestion(this.state.questions)}/>:null}
         {screenSetting.polls?
         <PollScreen polls={this.state.polls}/>:null}
         {screenSetting.answered?
