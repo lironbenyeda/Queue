@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { connect } from "react-redux";
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {createQuestion} from '../../actions/questionActions';
 
 class QuestionForm extends React.Component {
     constructor(props) {
@@ -11,8 +12,9 @@ class QuestionForm extends React.Component {
             question: ''
         }
     }
-    sendQuestion=()=>{
-
+    sendQuestion=()=>{        
+        this.props.askQuestion(this.state.question) //todo send
+        this.props.QuestionSent();
     }
 
     render() {        
@@ -46,4 +48,12 @@ class QuestionForm extends React.Component {
 
 }
 
-export default QuestionForm;
+const mapStateToProps = state => ({
+    state: state
+  });
+  const mapDispatchToProps = dispatch => ({
+    askQuestion: question => dispatch(createQuestion(question))  
+  });
+  
+  
+export default connect(mapStateToProps,mapDispatchToProps)(QuestionForm);
