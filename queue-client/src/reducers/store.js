@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 
 // Logger with default options
-import logger from "redux-logger";
+
 
 import questionReducer from "./questionReducer";
 export const initialState = {
@@ -10,13 +10,13 @@ export const initialState = {
     userName: '',
     screenSetting: {
         question: false,
-        polls: false,
+        polls: true,
         answered: false
 
     }
 
 }
 export default function configureStore() {
-    const store = createStore(questionReducer, initialState, applyMiddleware(logger));
+    const store = createStore(questionReducer, initialState, applyMiddleware());
     return store;
 }

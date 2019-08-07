@@ -12,6 +12,9 @@ const questionReducer = (state = initialState, action) => {
         case Types.CHANGE_SCREEN:{
             return Object.assign({},state,{screenSetting:action.screenSetting})
         }
+        case Types.UPDATE_POLL:{
+            return Object.assign({},state,{polls:[...action.polls]})
+        }
         default: {
             return state
         }

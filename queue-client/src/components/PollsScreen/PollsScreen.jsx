@@ -2,6 +2,10 @@ import React from 'react';
 import PollForm from './pollForm'
 import Poll from './poll'
 import styled from 'styled-components';
+import PollsApi from '../../api/pollsApi';
+import {connect} from 'react-redux';
+import {updatePolls} from '../../actions/questionActions'
+
 const Div = styled.div`
 background: white;
 width:80%;
@@ -16,19 +20,31 @@ class PollsScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            asking: false
+            asking: false,
+            polls:this.props.polls
         }
     }
+   UNSAFE_componentWillReceiveProps(newProps){
+        console.table(newProps.polls[2].answers)
+       this.setState({
+           polls:newProps.polls
+       })
+   }
     pollSent = () => {
         //todo get all then
-        
-        this.setState({ asking: false })
+        PollsApi.getPolls().then((data)=>{
+            this.setState({
+                asking: false,
+                polls:data
+            })
+        })
+       
       }
       changeTime=()=>{
           
     }
     render() {
-
+        
         return (<Div>
              <select onChange={()=>this.changeTime()}>               
                 <option value={'none'}>סנן זמן</option>
@@ -40,14 +56,30 @@ class PollsScreen extends React.Component {
             <button onClick={() => this.setState({ asking: true })}>הוסף סקר</button>
             {this.state.asking ? <PollForm pollSent={() => this.pollSent()}></PollForm> : null}
             <div style={{ 'marginTop': '5%' }}>
-                {this.props.polls && this.props.polls.length > 0 ?
-                    sortPollsBySum(this.props.polls).map((poll, index) => {
-                        return (<Poll key={index} poll={poll} />)
+                {this.state.polls && this.state.polls.length > 0 ?
+                    sortPollsBySum(this.state.polls).map((poll, index) => {
+                        return (<Poll key={index} poll={poll} updatePoll={(poll)=>{
+                            const newPolls = this.state.polls.map((pollNoNeeded,indexToReplace)=>{
+                                if(index===indexToReplace)
+                                    return poll
+                                return pollNoNeeded
+                            })                            
+                            this.props.updatePolls(newPolls)
+                            
+                        }} />)
                     })
                     : null}
             </div>
         </Div>)
     }
 }
+const mapStateToProps = state => ({
+    polls: state.polls
+  });
+  const mapDispatchToProps = dispatch => ({
+    updatePolls :polls => dispatch(updatePolls(polls))  
+  });
+  
+  
 
-export default PollsScreen
+export default connect(mapStateToProps,mapDispatchToProps)(PollsScreen)

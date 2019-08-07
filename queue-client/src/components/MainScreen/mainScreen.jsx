@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import PollScreen from '../PollsScreen/PollsScreen';
 import PollApi from '../../api/pollsApi';
 import AnsweredQuestions from '../AnsweredScreen/AnsweredScreen';
+import {updatePolls} from '../../actions/questionActions'
 const Background = styled.div`
 height: -webkit-fill-available;
 background: #476771;
@@ -34,9 +35,7 @@ class MainScreen extends React.Component {
       })
     })
     PollApi.getPolls().then(data=>{
-      this.setState({
-        polls:data
-      })
+     this.props.updatePolls(data)
     })
   }
   render() {
@@ -50,7 +49,7 @@ class MainScreen extends React.Component {
           })
         })} questions={removeAnsweredQuestion(this.state.questions)}/>:null}
         {screenSetting.polls?
-        <PollScreen polls={this.state.polls}/>:null}
+        <PollScreen/>:null}
         {screenSetting.answered?
         <AnsweredQuestions questions={onlyAnsweredQuestion(this.state.questions)}/>:null}
       </Background>
@@ -62,7 +61,7 @@ const mapStateToProps = state => ({
   screenSetting: state.screenSetting
 });
 const mapDispatchToProps = dispatch => ({
- 
+  updatePolls :polls => dispatch(updatePolls(polls))  
 });
 
 

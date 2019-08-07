@@ -47,11 +47,11 @@ class Questions extends React.Component {
 
             <div style={{ 'marginTop': '5%' }}>
 
-                {this.props.questions && this.props.questions.length > 0 ?
-                    sortQuestionsByRank(this.props.questions).map((question, index) => {
+                {this.state.questions && this.state.questions.length > 0 ?
+                    sortQuestionsByRank(this.state.questions).map((question, index) => {
                         return (<Question key={index} question={question} updateRank={()=>{
                             const newQuestions = this.state.questions;
-                            newQuestions[index].rank = newQuestions[index].rank +1
+                            
                             this.setState({
                                 question:newQuestions
                             })
