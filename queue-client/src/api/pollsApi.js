@@ -24,7 +24,7 @@ export default class PollApi {
                 },
                 {
                     question: 'למה שלא נפתח את זה ביחידה?',
-                    sum: 12,
+                    sum: 15,
                     answers: [{
                         answer: 'תשובה של אלמ',
                         rank: 5

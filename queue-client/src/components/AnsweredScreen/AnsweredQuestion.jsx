@@ -1,21 +1,19 @@
 
 import React from 'react';
-import styled from 'styled-components';
+
 import Paper from '@material-ui/core/Paper';
 import Stars from '@material-ui/icons/Stars';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment'
-class Question extends React.Component {
+class AnsweredQuestion extends React.Component {
 
     render() {
         const question = this.props.question
         return (
-            <Paper style={{ width: '80%', margin: 'auto' }}>
+            <Paper style={{ width: '80%', margin: 'auto', marginTop: '5%' }}>
                 <Typography variant="h4">
-                    השאלה: {question.question}
+                    {question.question}
                 </Typography>
-
-
                 <Typography variant="body1" >
                     נשאלה בתאריך :{moment(question.date).format('DD/MM/YYYY')}
                 </Typography>
@@ -30,10 +28,24 @@ class Question extends React.Component {
                         bottom: '5px',
                     }}>
                         {question.rank}
-                    </span><Stars onClick={()=>{
+                    </span><Stars onClick={() => {
                         //todo updaterank
-                    }}/>
+                    }} />
                 </div>
+                {question.answers.length > 0 ? question.answers.map((answer, index) => {
+                    return (<div key={index} style={{
+                        'display': 'flex',
+                        'flexDirection': 'column'
+                    }}>
+                        <span>תשובה:</span>
+                        <span>{answer.answer}</span>
+                        <span>על ידי:</span>
+                        <span>{answer.user}</span>
+                        <span>תאריך:</span>
+                        <span>{moment(answer.date).format('DD/MM/YYYY')}</span>
+                    </div>)
+                }) : null
+                }
 
 
             </Paper>
@@ -42,4 +54,4 @@ class Question extends React.Component {
 
 }
 
-export default Question;
+export default AnsweredQuestion;

@@ -5,9 +5,16 @@ import Paper from '@material-ui/core/Paper';
 import Stars from '@material-ui/icons/Stars';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment'
+import './Question.css'
 class Question extends React.Component {
-
+    constructor(props){
+        super(props)
+        this.state={
+            starFade:false
+        }
+    }
     render() {
+        console.log(this.state.starFade)
         const question = this.props.question
         return (
             <Paper style={{ width: '80%', margin: 'auto',marginTop:'5%' }}>
@@ -30,7 +37,13 @@ class Question extends React.Component {
                         {question.rank}
                     </span><Stars onClick={()=>{
                         //todo updaterank
-                    }}/>
+                        this.setState({
+                            starFade:true
+                        })
+                    }}
+                    onAnimationEnd={()=>this.setState({starFade:false})}
+                    className={this.state.starFade? 'fade':null}                    
+                    />
                 </div>
 
 
