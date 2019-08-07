@@ -1,63 +1,59 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import QuestionForm from '../QuestionForm/questionForm'
-import Question from '../QuestionForm/Question'
+import QuestionScreen from '../QuestionScreen/QuestionScreen'
+import QuestionAPI from '../../api/questionApi';
+import {connect} from 'react-redux';
+import PollScreen from '../PollsScreen/PollsScreen';
+import PollApi from '../../api/pollsApi';
 const Background = styled.div`
 height: -webkit-fill-available;
 background: #476771;
 `
-const QuestionsScreen = styled.div`
-background: white;
-width:80%;
-margin:auto;
-height: -webkit-fill-available;
-padding-top:3%
-`
+
+const removeAnsweredQuestion =(questions)=>{
+  return questions.filter(question=> question.isAnswered===false)
+}
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       asking: false,
-      questions: [{
-        question: 'מה ייתן המעבר לנגב?',
-        rank: 5,
-        answers: [{
-          answer: 'תשובה של אלמ',
-          date: new Date(),
-          user: 'מירון'
-
-        }],
-        date: new Date(),
-        isAnswered: false
-
-      }]
+      questions: [],
+      polls:[]
     }
   }
-  questionSent = () => {
-    //todo get all then
-    this.setState({ asking: false })
+  componentDidMount(){
+    QuestionAPI.getQuestions().then(data=>{
+      this.setState({
+        questions:data
+      })
+    })
+    PollApi.getPolls().then(data=>{
+      this.setState({
+        polls:data
+      })
+    })
   }
   render() {
+    const screenSetting = this.props.screenSetting
     return (
       <Background>
-        <QuestionsScreen>
-          <button onClick={() => this.setState({ asking: true })}>שאל</button>
-          {this.state.asking ? <QuestionForm QuestionSent={() => this.questionSent}></QuestionForm> : null}
-          <span>שאלות שנשאלו הכי הרבה</span>
-          <div style={{'marginTop':'5%'}}>
-
-            {this.state.questions && this.state.questions.length > 0 ?
-              this.state.questions.map((question, index) => {
-                return (<Question key={index} question={question} />)
-              })
-              : null}
-          </div>
-        </QuestionsScreen>
+        {screenSetting.questions? 
+        <QuestionScreen questions={removeAnsweredQuestion(this.state.questions)}/>:null}
+        {screenSetting.polls?
+        <PollScreen polls={this.state.polls}/>:null}
       </Background>
     );
   }
 
 }
+const mapStateToProps = state => ({
+  screenSetting: state.screenSetting
+});
+const mapDispatchToProps = dispatch => ({
+ 
+});
 
-export default MainScreen;
+
+export default connect(mapStateToProps,mapDispatchToProps)(MainScreen);

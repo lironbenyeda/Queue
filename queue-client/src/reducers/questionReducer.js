@@ -9,6 +9,9 @@ const questionReducer = (state = initialState, action) => {
                 questions: action.question
             })
         }
+        case Types.CHANGE_SCREEN:{
+            return Object.assign({},state,{screenSetting:action.screenSetting})
+        }
         default: {
             return state
         }
