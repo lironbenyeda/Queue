@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {createQuestion} from '../../actions/questionActions';
+import {updateQuestion} from '../../actions/questionActions';
 import QuestionApi from '../../api/questionApi'
 
 class QuestionForm extends React.Component {
@@ -13,10 +13,10 @@ class QuestionForm extends React.Component {
             question: ''
         }
     }
-    sendQuestion=()=>{      
-        console.log('sent')  
+    sendQuestion=()=>{ 
         QuestionApi.postQuestion(this.state.question).then((res)=>{
-
+            console.log(this.props.questions.concat(res))
+            this.props.updateQuestion(this.props.questions.concat(res))
             this.props.QuestionSent()         
         })
     }
@@ -53,10 +53,10 @@ class QuestionForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    state: state
+    questions: state.questions
   });
   const mapDispatchToProps = dispatch => ({
-    askQuestion: question => dispatch(createQuestion(question))  
+    updateQuestion: questions => dispatch(updateQuestion(questions))  
   });
   
   

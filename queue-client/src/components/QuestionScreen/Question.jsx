@@ -8,31 +8,32 @@ import moment from 'moment'
 import TextField from '@material-ui/core/TextField';
 import './Question.css';
 import QuestionApi from '../../api/questionApi'
-import { confirmAlert } from 'react-confirm-alert'
-import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import { connect } from 'react-redux';
+import { updateQuestion } from '../../actions/questionActions'
 class Question extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             starFade: false,
             answerBox: false,
-            answer:''
+            answer: ''
         }
     }
-    showAnswerBox = () => {
+    showHideAnswerBox = () => {
         this.setState({
-            answerBox: true
+            answerBox: !this.state.answerBox
         })
     }
-    setAnswer=(answer)=>{
+    setAnswer = (answer) => {
         this.setState({
-            answer:answer
+            answer: answer
         })
     }
     render() {
 
         const question = this.props.question;
-        console.log(question.answers)
+
         return (
             <Paper style={{ width: '80%', margin: 'auto', marginTop: '5%' }}>
                 <Typography variant="h4">
@@ -57,8 +58,12 @@ class Question extends React.Component {
                         newQuestion.rank = newQuestion.rank + 1
                         this.setState({
                             starFade: true
-                        }, () => QuestionApi.updateQuestion(question).then(() => {
-                            this.props.updateRank();
+                        }, () => QuestionApi.updateQuestion(question).then((data) => {
+                            this.props.updateQuestion(this.props.questions.filter(question => {
+                                if (question._id === data._id)
+                                    return data;
+                                return question;
+                            }))
                         }))
                     }}
                         onAnimationEnd={() => this.setState({ starFade: false })}
@@ -67,31 +72,35 @@ class Question extends React.Component {
 
                 </div>
                 <div>
-                    <button onClick={() => this.showAnswerBox()}>תן בתשובה</button>
+                    <button onClick={() => this.showHideAnswerBox()}>תן בתשובה</button>
                     {this.state.answerBox ?
-                    <div>
-                         <TextField
-                        id="outlined-dense-multiline"
-                        label="תשובה לשאלה"
-                        placeholder="יאללה"
-                        onChange={(event)=> this.setAnswer(event.target.value)}
-                        margin="dense"
-                        variant="outlined"
-                        multiline
-                        rowsMax="4"
-                    />
-                    <button onClick={()=>{
-                        let question = this.props.question
-                        question.answers.push(
-                            {text:this.state.answer,user:"oded",date:new Date()}
-                        ) 
-                        QuestionApi.updateQuestion(question).then(() => {
-                            this.props.updateRank();
-                        })
-                    }
-                        
-                        }>שלח</button>
-                    </div>:null}
+                        <div>
+                            <TextField
+                                id="outlined-dense-multiline"
+                                label="תשובה לשאלה"
+                                placeholder="יאללה"
+                                onChange={(event) => this.setAnswer(event.target.value)}
+                                margin="dense"
+                                variant="outlined"
+                                multiline
+                                rowsMax="4"/>
+                            <button onClick={() => {
+                                let question = this.props.question
+                                question.answers.push(
+                                    { text: this.state.answer, user: "oded", date: new Date() }
+                                );
+                                question.isAnswered = true
+                                QuestionApi.updateQuestion(question).then((data) => {
+                                    
+                                    this.props.updateQuestion(this.props.questions.filter(question => {
+                                        if (question._id === data._id)
+                                            return data;
+                                        return question;
+                                    }))
+                                    this.showHideAnswerBox()
+                                })
+                            }}>שלח</button>
+                        </div> : null}
                 </div>
 
 
@@ -101,4 +110,12 @@ class Question extends React.Component {
 
 }
 
-export default Question;
+const mapStateToProps = state => ({
+    questions: state.questions
+});
+const mapDispatchToProps = dispatch => ({
+    updateQuestion: question => dispatch(updateQuestion(question))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

@@ -7,18 +7,14 @@ import {connect} from 'react-redux';
 import PollScreen from '../PollsScreen/PollsScreen';
 import PollApi from '../../api/pollsApi';
 import AnsweredQuestions from '../AnsweredScreen/AnsweredScreen';
-import {updatePolls} from '../../actions/questionActions'
+import {updatePolls, updateQuestion} from '../../actions/questionActions'
 const Background = styled.div`
 height: -webkit-fill-available;
 background: #476771;
 `
 
-const removeAnsweredQuestion =(questions)=>{
-  return questions.filter(question=> question.isAnswered===false)
-}
-const onlyAnsweredQuestion=(questions)=>{
-  return questions.filter(question=> question.isAnswered===true)
-}
+
+
 class MainScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -30,9 +26,7 @@ class MainScreen extends React.Component {
   }
   componentDidMount(){
     QuestionAPI.getQuestions().then(data=>{
-      this.setState({
-        questions:data
-      })
+      this.props.updateQuestions(data)
     })
     PollApi.getPolls().then(data=>{
      this.props.updatePolls(data)
@@ -43,15 +37,11 @@ class MainScreen extends React.Component {
     return (
       <Background>
         {screenSetting.questions? 
-        <QuestionScreen reload={()=>QuestionAPI.getQuestions().then(data=>{
-          this.setState({
-            questions:data
-          })
-        })} questions={removeAnsweredQuestion(this.state.questions)}/>:null}
+        <QuestionScreen />:null}
         {screenSetting.polls?
         <PollScreen/>:null}
         {screenSetting.answered?
-        <AnsweredQuestions questions={onlyAnsweredQuestion(this.state.questions)}/>:null}
+        <AnsweredQuestions/>:null}
       </Background>
     );
   }
@@ -61,7 +51,8 @@ const mapStateToProps = state => ({
   screenSetting: state.screenSetting
 });
 const mapDispatchToProps = dispatch => ({
-  updatePolls :polls => dispatch(updatePolls(polls))  
+  updatePolls :polls => dispatch(updatePolls(polls)),
+  updateQuestions:questions=>dispatch(updateQuestion(questions))
 });
 
 

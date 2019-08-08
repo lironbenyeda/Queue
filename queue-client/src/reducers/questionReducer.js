@@ -15,6 +15,9 @@ const questionReducer = (state = initialState, action) => {
         case Types.UPDATE_POLL:{
             return Object.assign({},state,{polls:[...action.polls]})
         }
+        case Types.UPDATE_QUESTION:{
+            return Object.assign({},state,{questions:[...action.questions]})
+        }
         default: {
             return state
         }

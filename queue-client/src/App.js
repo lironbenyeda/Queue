@@ -9,7 +9,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import configureStore from './reducers/store'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const reduxStore = configureStore();
+export const reduxStore = configureStore();
 const theme = createMuiTheme({
   props: {
     MuiTypography: {

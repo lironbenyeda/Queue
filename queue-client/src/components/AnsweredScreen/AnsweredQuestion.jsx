@@ -12,7 +12,7 @@ class AnsweredQuestion extends React.Component {
         return (
             <Paper style={{ width: '80%', margin: 'auto', marginTop: '5%' }}>
                 <Typography variant="h4">
-                    {question.question}
+                    {question.text}
                 </Typography>
                 <Typography variant="body1" >
                     נשאלה בתאריך :{moment(question.date).format('DD/MM/YYYY')}
@@ -28,9 +28,7 @@ class AnsweredQuestion extends React.Component {
                         bottom: '5px',
                     }}>
                         {question.rank}
-                    </span><Stars onClick={() => {
-                        //todo updaterank
-                    }} />
+                    </span><Stars/>
                 </div>
                 {question.answers.length > 0 ? question.answers.map((answer, index) => {
                     return (<div key={index} style={{
@@ -38,7 +36,7 @@ class AnsweredQuestion extends React.Component {
                         'flexDirection': 'column'
                     }}>
                         <span>תשובה:</span>
-                        <span>{answer.answer}</span>
+                        <span>{answer.text}</span>
                         <span>על ידי:</span>
                         <span>{answer.user}</span>
                         <span>תאריך:</span>
