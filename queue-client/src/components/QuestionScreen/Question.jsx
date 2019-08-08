@@ -8,7 +8,7 @@ import moment from 'moment'
 import TextField from '@material-ui/core/TextField';
 import './Question.css';
 import QuestionApi from '../../api/questionApi'
-import 'react-confirm-alert/src/react-confirm-alert.css';
+
 import { connect } from 'react-redux';
 import { updateQuestion } from '../../actions/questionActions'
 class Question extends React.Component {
@@ -58,8 +58,12 @@ class Question extends React.Component {
                         newQuestion.rank = newQuestion.rank + 1
                         this.setState({
                             starFade: true
-                        }, () => QuestionApi.updateQuestion(question).then(() => {
-                            
+                        }, () => QuestionApi.updateQuestion(question).then((data) => {
+                            this.props.updateQuestion(this.props.questions.filter(question => {
+                                if (question._id === data._id)
+                                    return data;
+                                return question;
+                            }))
                         }))
                     }}
                         onAnimationEnd={() => this.setState({ starFade: false })}

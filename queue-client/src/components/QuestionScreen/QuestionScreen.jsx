@@ -2,7 +2,6 @@ import React from 'react';
 import QuestionForm from './questionForm'
 import Question from './Question';
 import styled from 'styled-components';
-import QuestionApi from '../../api/questionApi'
 import {connect} from 'react-redux';
 import {updateQuestion} from '../../actions/questionActions'
 const QuestionsScreen = styled.div`
@@ -23,12 +22,9 @@ class Questions extends React.Component {
         super(props)
         this.state = {
             asking: false,
-            timeInHebrew:'סנן זמן',
-            questions:this.props.questions
         }
     }
     questionSent = () => {
-        //todo get all then
         this.setState({ asking: false })        
     }
     changeTime = (event) => {

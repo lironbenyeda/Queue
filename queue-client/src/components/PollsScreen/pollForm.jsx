@@ -18,7 +18,6 @@ class PollForm extends React.Component {
     }
     sendPoll = () => {
         const answersTosend = this.state.answers.map((answer)=>{
-
             return{
                 text:answer.text,
                 rank:0
@@ -30,10 +29,8 @@ class PollForm extends React.Component {
 
         }
        PollApi.postPoll(poll).then(()=>{
-
            this.props.pollSent();
-        }
-       )
+        })
     }
     addNewAnswer=()=>{
         

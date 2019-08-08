@@ -12,20 +12,20 @@ class Poll extends React.Component {
 
     render() {
         const poll = this.props.poll
-        const myData = poll.answers.map((answer,index)=>{
+        const myData = poll.answers.map((answer, index) => {
             return {
-                angle:answer.rank,
-                label:answer.text,
-                labelStyle:{
-                    color:'red'
-                }
+                angle: answer.rank,
+                label: answer.text,            
             }
         })
-      
+
         return (
             <Paper style={{ width: '80%', margin: 'auto', marginTop: '5%' }}>
                 <Typography variant="h4">
                     {poll.text}
+                </Typography>
+                <Typography variant="h5">
+                    מספר הצבעות: {poll.sumRank}
                 </Typography>
                 <Typography variant="body1" >
                     נשאלה בתאריך :{moment(poll.date).format('DD/MM/YYYY')}
@@ -38,31 +38,28 @@ class Poll extends React.Component {
                 }}>
 
                     <RadialChart
-                    showLabels={true}
+                        showLabels={true}
                         data={myData}
                         width={300}
                         height={300} />
                 </div>
                 <div>
-                    {poll.answers.length>0? 
-                    poll.answers.map((answer,index)=>{
-                        return (<div key={index}>
-                            <span>{answer.text}</span>
-                            <Stars onClick={()=>{
-                        let newPoll = poll
-                        newPoll.answers[index].rank = newPoll.answers[index].rank +1                   
-                       
-                        PollApi.updatePoll(newPoll).then((data)=>{
-                            console.table(data.answers)
-                            this.props.updatePoll(data)
-                        })
-                    }}
-                    
-                                       
-                    />
+                    {poll.answers.length > 0 ?
+                        poll.answers.map((answer, index) => {
+                            return (<div key={index}>
+                                <span>{answer.text}</span>
+                                <Stars onClick={() => {
+                                    let newPoll = poll
+                                    newPoll.answers[index].rank = newPoll.answers[index].rank + 1
+
+                                    PollApi.updatePoll(newPoll).then((data) => {
+                                        console.table(data.answers)
+                                        this.props.updatePoll(data)
+                                    })
+                                }} />
                             </div>)
-                    }):null}
-                </div> 
+                        }) : null}
+                </div>
 
             </Paper>
         );
@@ -70,6 +67,6 @@ class Poll extends React.Component {
 
 }
 
-  
+
 
 export default Poll;
