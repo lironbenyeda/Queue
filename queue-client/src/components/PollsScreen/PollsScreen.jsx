@@ -14,7 +14,7 @@ height: -webkit-fill-available;
 padding-top:3%
 `
 const sortPollsBySum = (questions) => {
-    return questions.sort((q1, q2) => q2.sum - q1.sum)
+    return questions.sort((q1, q2) => q2.sumRank - q1.sumRank)
 }
 class PollsScreen extends React.Component {
     constructor(props) {
