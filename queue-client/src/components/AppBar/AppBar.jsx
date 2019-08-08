@@ -19,7 +19,7 @@ class AppBar extends React.Component {
   
     return (
       <AppBanner>
-        <span style={{fontSize: "70px",fontFamily: "cursive"}}>Queue</span>
+        <span style={{fontSize: "70px",fontFamily: "cursive",fontWeight: 'bolder'}}>Queue</span>
         <Button variant="light" size="sm" style={{float: "left",position: "relative",margin: "1%"}} onClick={() =>
           confirmAlert({
             customUI: ({ onClose }) => {
