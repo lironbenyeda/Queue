@@ -18,30 +18,44 @@ class AnsweredQuestion extends React.Component {
                     נשאלה בתאריך :{moment(question.date).format('DD/MM/YYYY')}
                 </Typography>
                 <div style={{
-                    width: 'fit-content',
-                    marginRight: 'auto',
                     position: 'relative',
-                    right: '-20px',
+                    right: '-10px',
+                    float: 'left',
+                    bottom: '30px',
                 }}>
                     <span style={{
                         position: 'relative',
-                        bottom: '5px',
+                        top: '2px'
                     }}>
                         {question.rank}
-                    </span><Stars/>
+                    </span><Stars />
                 </div>
                 {question.answers.length > 0 ? question.answers.map((answer, index) => {
-                    return (<div key={index} style={{
-                        'display': 'flex',
-                        'flexDirection': 'column'
+                    return (<Paper key={index} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '80%',
+                        margin: 'auto',
+                        marginTop: '1%',
+                        background: 'white',
+                        marginBottom: '1%'
                     }}>
-                        <span>תשובה:</span>
-                        <span>{answer.text}</span>
-                        <span>על ידי:</span>
-                        <span>{answer.user}</span>
-                        <span>תאריך:</span>
-                        <span>{moment(answer.date).format('DD/MM/YYYY')}</span>
-                    </div>)
+                        <div>
+                            <Typography variant="h5">{answer.text}</Typography>
+                        </div>
+                        <div style={{ fontSize: '10px' }}>
+
+                            <span>
+                                על ידי:
+                            </span>
+                            <span>{answer.user}</span>
+                        </div>
+                        <div style={{ fontSize: '10px' }}>
+
+                            <span>תאריך:</span>
+                            <span>{moment(answer.date).format('DD/MM/YYYY')}</span>
+                        </div>
+                    </Paper>)
                 }) : null
                 }
 

@@ -43,28 +43,33 @@ class Question extends React.Component {
                     נשאלה בתאריך :{moment(question.created_date).format('DD/MM/YYYY')}
                 </Typography>
                 <div style={{
-                    width: 'fit-content',
-                    marginRight: 'auto',
-                    position: 'relative',
-                    right: '-20px',
+                  position: 'relative',
+                  right: '-10px',
+                  float: 'left',
+                  bottom: '30px',
                 }}>
-                    <span style={{position: 'relative',bottom: '5px',}}>
+                    <span style={{  position: 'relative',
+                        top: '2px'}}>
                         {question.rank}
                     </span><Stars onClick={() => {
-                        let newQuestion = question
-                        newQuestion.rank = newQuestion.rank + 1
-                        this.setState({
-                            starFade: true
-                        }, () => QuestionApi.updateQuestion(question).then((data) => {
-                            this.props.updateQuestion(this.props.questions.filter(question => {
-                                if (question._id === data._id)
+                        if(this.state.starFade !=='fade'){
+
+                            let newQuestion = question
+                            newQuestion.rank = newQuestion.rank + 1
+                            this.setState({
+                                starFade: true
+                            }, () => QuestionApi.updateQuestion(question).then((data) => {
+                                this.props.updateQuestion(this.props.questions.filter(question => {
+                                    if (question._id === data._id)
                                     return data;
-                                return question;
+                                    return question;
+                                }))
                             }))
-                        }))
+                        }
                     }}
                         onAnimationEnd={() => this.setState({ starFade: false })}
                         className={this.state.starFade ? 'fade' : null}
+                        
                     />
 
                 </div>
