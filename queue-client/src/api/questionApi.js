@@ -16,4 +16,10 @@ export default class QuestionAPI{
             return data.data
         })
     }
+    static getByDate(date){
+        return axios.get('http://129.213.134.160/questions/?startdate='+date).then(data=>{
+            return data.data
+        })
+    
+    }
 }

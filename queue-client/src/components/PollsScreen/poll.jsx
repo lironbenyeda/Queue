@@ -28,7 +28,7 @@ class Poll extends React.Component {
                     מספר הצבעות: {poll.sumRank}
                 </Typography>
                 <Typography variant="body1" >
-                    נשאלה בתאריך :{moment(poll.date).format('DD/MM/YYYY')}
+                    נשאלה בתאריך :{moment(poll.created_date).format('DD/MM/YYYY')}
                 </Typography>
                 <div style={{
                     width: 'fit-content',

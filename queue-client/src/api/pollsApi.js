@@ -15,4 +15,10 @@ export default class PollApi {
             return res.data
         })
     }
+    static getByDate(date){
+        return axios.get('http://129.213.134.160/surveys/?startdate='+date).then(data=>{
+            return data.data
+        })
+    
+    }
 }

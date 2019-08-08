@@ -5,7 +5,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import { confirmAlert } from 'react-confirm-alert';
 import LoginScreen from './LoginScreen'
 import { Provider } from 'react-redux'
-import {reduxStore} from '../../App'
+import {reduxStore} from '../../App';
+import {connect} from 'react-redux'
 const AppBanner = styled.div`
     height: 80px;
     background: lightgray;
@@ -14,6 +15,7 @@ const AppBanner = styled.div`
 class AppBar extends React.Component {
 
   render() {
+  
     return (
       <AppBanner>
         <span>Queue</span>
@@ -27,11 +29,19 @@ class AppBar extends React.Component {
               );
             }
           })
-        }>היכנס</button>
+        }>{this.props.userName !== ''? this.props.userName:'היכנס'}</button>
       </AppBanner>
     );
   }
 
 }
+const mapStateToProps = state => ({
+  userName: state.userName
+});
+const mapDispatchToProps = dispatch => ({
+  
+});
 
-export default AppBar;
+
+
+export default connect(mapStateToProps,mapDispatchToProps)( AppBar);

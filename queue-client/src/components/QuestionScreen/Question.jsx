@@ -40,7 +40,7 @@ class Question extends React.Component {
                     {question.text}
                 </Typography>
                 <Typography variant="body1" >
-                    נשאלה בתאריך :{moment(question.date).format('DD/MM/YYYY')}
+                    נשאלה בתאריך :{moment(question.created_date).format('DD/MM/YYYY')}
                 </Typography>
                 <div style={{
                     width: 'fit-content',
@@ -71,6 +71,7 @@ class Question extends React.Component {
                     />
 
                 </div>
+                {this.props.user !== '' ? 
                 <div>
                     <button onClick={() => this.showHideAnswerBox()}>תן בתשובה</button>
                     {this.state.answerBox ?
@@ -101,7 +102,7 @@ class Question extends React.Component {
                                 })
                             }}>שלח</button>
                         </div> : null}
-                </div>
+                </div> :null}
 
 
             </Paper >
@@ -111,7 +112,8 @@ class Question extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    questions: state.questions
+    questions: state.questions,
+    user: state.userName
 });
 const mapDispatchToProps = dispatch => ({
     updateQuestion: question => dispatch(updateQuestion(question))

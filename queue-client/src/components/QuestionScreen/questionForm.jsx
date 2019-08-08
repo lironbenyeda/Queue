@@ -15,7 +15,7 @@ class QuestionForm extends React.Component {
     }
     sendQuestion=()=>{ 
         QuestionApi.postQuestion(this.state.question).then((res)=>{
-            console.log(this.props.questions.concat(res))
+      
             this.props.updateQuestion(this.props.questions.concat(res))
             this.props.QuestionSent()         
         })

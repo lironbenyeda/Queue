@@ -4,7 +4,6 @@ import { initialState } from './store'
 const questionReducer = (state = initialState, action) => {
     switch (action.type) {
         case Types.ASK_QUESTION: {
-            console.log(action.question);
             return Object.assign({}, state, {
                 questions: action.question
             })
@@ -17,6 +16,9 @@ const questionReducer = (state = initialState, action) => {
         }
         case Types.UPDATE_QUESTION:{
             return Object.assign({},state,{questions:[...action.questions]})
+        }
+        case Types.UPDATE_USER:{
+            return {...state,userName:action.user}
         }
         default: {
             return state
