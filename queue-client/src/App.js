@@ -8,6 +8,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import configureStore from './reducers/store'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const reduxStore = configureStore();
 const theme = createMuiTheme({
@@ -32,6 +34,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Provider store={reduxStore}>
+        <ToastContainer/>
         <div className="App">
           <AppBar />
           <SearchBar />

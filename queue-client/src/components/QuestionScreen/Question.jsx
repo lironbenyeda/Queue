@@ -48,10 +48,7 @@ class Question extends React.Component {
                     position: 'relative',
                     right: '-20px',
                 }}>
-                    <span style={{
-                        position: 'relative',
-                        bottom: '5px',
-                    }}>
+                    <span style={{position: 'relative',bottom: '5px',}}>
                         {question.rank}
                     </span><Stars onClick={() => {
                         let newQuestion = question

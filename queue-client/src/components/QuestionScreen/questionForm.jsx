@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {updateQuestion} from '../../actions/questionActions';
-import QuestionApi from '../../api/questionApi'
+import { updateQuestion } from '../../actions/questionActions';
+import QuestionApi from '../../api/questionApi';
+import {toast} from 'react-toastify'
 
 class QuestionForm extends React.Component {
     constructor(props) {
@@ -13,21 +14,23 @@ class QuestionForm extends React.Component {
             question: ''
         }
     }
-    sendQuestion=()=>{ 
-        QuestionApi.postQuestion(this.state.question).then((res)=>{
-      
+    sendQuestion = () => {
+        if(this.state.question.length<140)
+        QuestionApi.postQuestion(this.state.question).then((res) => {
+
             this.props.updateQuestion(this.props.questions.concat(res))
-            this.props.QuestionSent()         
+            this.props.QuestionSent()
         })
+        else{
+            toast.error('יותר מידי תווים בשאלה')
+        }
     }
 
-    render() {        
+    render() {
         return (
             <Paper >
-                {/* <Typography variant="h5" component="h3">
-                   שאל שאלה
-        </Typography> */}
                 <TextField
+                    error={this.state.question.length > 140 ? true : false}
                     id="filled-full-width"
                     label="שאל שאלה"
                     style={{ width: '80%' }}
@@ -39,7 +42,7 @@ class QuestionForm extends React.Component {
                         shrink: true,
                     }}
                 />
-                <Button variant="contained" color="primary" onClick={()=>this.sendQuestion()}style={{
+                <Button variant="contained" color="primary" onClick={() => this.sendQuestion()} style={{
                     marginRight: '5%',
                     position: 'relative',
                     top: '25px',
@@ -54,10 +57,10 @@ class QuestionForm extends React.Component {
 
 const mapStateToProps = state => ({
     questions: state.questions
-  });
-  const mapDispatchToProps = dispatch => ({
-    updateQuestion: questions => dispatch(updateQuestion(questions))  
-  });
-  
-  
-export default connect(mapStateToProps,mapDispatchToProps)(QuestionForm);
+});
+const mapDispatchToProps = dispatch => ({
+    updateQuestion: questions => dispatch(updateQuestion(questions))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionForm);
