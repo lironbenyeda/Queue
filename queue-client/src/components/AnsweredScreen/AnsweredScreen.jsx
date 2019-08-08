@@ -40,7 +40,7 @@ class AnsweredQuestions extends React.Component {
                 <Dropdown.Item eventKey={'365'}>השנה</Dropdown.Item>
             </DropdownButton>
             </div>
-            <div style={{ 'marginTop': '5%' }}>
+            <div style={{ 'marginTop': '19%' }}>
                 {this.props.questions && this.props.questions.length > 0 ?
                     sortQuestionsByRank(this.props.questions).map((question, index) => {
                         return (<AnsweredQuestion key={index} question={question} />)

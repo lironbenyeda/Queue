@@ -28,12 +28,6 @@ class PollsScreen extends React.Component {
             polls: this.props.polls
         }
     }
-    UNSAFE_componentWillReceiveProps(newProps) {
-        console.table(newProps.polls[2].answers)
-        this.setState({
-            polls: newProps.polls
-        })
-    }
     pollSent = () => {
         PollsApi.getPolls().then((data) => {
             this.setState({
@@ -55,27 +49,33 @@ class PollsScreen extends React.Component {
     render() {
 
         return (<Div>
-          
-            <div style={{width:"90%"}}>
-            <Button title="הוסף סקר" style={{margin:"auto", width:"70px", height:"70px", borderRadius:"50%"}} onClick={() => this.setState({ asking: true })}>
-                <i style={{fontSize:"40px", marginTop: "10%"}} className="fa fa-plus"></i>
+
+            <div style={{ width: "90%" }}>
+                <Button title="הוסף סקר" style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '50%',
+                    position: 'relative',
+                    right: '7.7%',
+                }} onClick={() => this.setState({ asking: true })}>
+                    <i style={{ fontSize: "40px", marginTop: "10%" }} className="fa fa-plus"></i>
                 </Button>
-            <DropdownButton variant="outline-primary" style={{float: "left"}} id="dropdown-basic-button" title="סנן זמן" onSelect={this.changeTime}>
-                <Dropdown.Item eventKey={'none'}>הכל</Dropdown.Item>
-                <Dropdown.Item eventKey={'1'}>היום</Dropdown.Item>
-                <Dropdown.Item eventKey={'7'}>השבוע</Dropdown.Item>
-                <Dropdown.Item eventKey={'30'}>החודש</Dropdown.Item>
-                <Dropdown.Item eventKey={'365'}>השנה</Dropdown.Item>
-            </DropdownButton>
+                <DropdownButton variant="outline-primary" style={{ float: "left" }} id="dropdown-basic-button" title="סנן זמן" onSelect={this.changeTime}>
+                    <Dropdown.Item eventKey={'none'}>הכל</Dropdown.Item>
+                    <Dropdown.Item eventKey={'1'}>היום</Dropdown.Item>
+                    <Dropdown.Item eventKey={'7'}>השבוע</Dropdown.Item>
+                    <Dropdown.Item eventKey={'30'}>החודש</Dropdown.Item>
+                    <Dropdown.Item eventKey={'365'}>השנה</Dropdown.Item>
+                </DropdownButton>
             </div>
 
 
             {this.state.asking ? <PollForm pollSent={() => this.pollSent()}></PollForm> : null}
             <div style={{ 'marginTop': '5%' }}>
-                {this.state.polls && this.state.polls.length > 0 ?
-                    sortPollsBySum(this.state.polls).map((poll, index) => {
+                {this.props.polls && this.props.polls.length > 0 ?
+                    sortPollsBySum(this.props.polls).map((poll, index) => {
                         return (<Poll key={index} poll={poll} updatePoll={(poll) => {
-                            const newPolls = this.state.polls.map((pollNoNeeded, indexToReplace) => {
+                            const newPolls = this.props.polls.map((pollNoNeeded, indexToReplace) => {
                                 if (index === indexToReplace)
                                     return poll
                                 return pollNoNeeded

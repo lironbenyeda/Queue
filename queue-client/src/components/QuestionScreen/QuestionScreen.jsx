@@ -50,18 +50,26 @@ class Questions extends React.Component {
 
         return (<QuestionsScreen>
           
-          <div style={{width:"90%"}}>
-            <Button title="הוסף שאלה" style={{margin:"auto", width:"70px", height:"70px", borderRadius:"50%"}} onClick={() => this.setState({ asking: true })}>
+          <div style={{ width: "90%" }}>
+            <Button title="הוסף שאלה" style={{ width: '70px',
+                    height: '70px',
+                    borderRadius: '50%',
+                    position: 'relative',
+                    right:'9%'
+                    }} onClick={() => this.setState({ asking: true })}>
                 <i style={{fontSize:"40px", marginTop: "10%"}} className="fa fa-plus"></i>
                 </Button>
-            <DropdownButton variant="outline-primary" style={{float: "left"}} id="dropdown-basic-button" title="סנן זמן" onSelect={this.changeTime}>
+            <DropdownButton variant="outline-primary" id="dropdown-basic-button" title="סנן זמן" style={{
+                width: 'fit-content',
+                float: 'left',
+            }}onSelect={this.changeTime}>
                 <Dropdown.Item eventKey={'none'}>הכל</Dropdown.Item>
                 <Dropdown.Item eventKey={'1'}>היום</Dropdown.Item>
                 <Dropdown.Item eventKey={'7'}>השבוע</Dropdown.Item>
                 <Dropdown.Item eventKey={'30'}>החודש</Dropdown.Item>
                 <Dropdown.Item eventKey={'365'}>השנה</Dropdown.Item>
             </DropdownButton>
-            </div>
+           </div>
 
             {this.state.asking ? <QuestionForm QuestionSent={() => this.questionSent()}></QuestionForm> : null}
 

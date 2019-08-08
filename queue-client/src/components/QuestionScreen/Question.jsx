@@ -39,7 +39,10 @@ class Question extends React.Component {
                 <Typography variant="h4">
                     {question.text}
                 </Typography>
-                <Typography variant="body1" >
+                <Typography variant="body1" style={{
+                    position: 'relative',
+                    right: '3%',
+                }}>
                     נשאלה בתאריך :{moment(question.created_date).format('DD/MM/YYYY')}
                 </Typography>
                 <div style={{
