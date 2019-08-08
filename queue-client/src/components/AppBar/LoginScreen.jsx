@@ -1,6 +1,5 @@
 
 import React from 'react';
-import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
@@ -18,8 +17,8 @@ class LoginScreen extends React.Component {
   login = () => {
     axios.get('http://129.213.134.160/users/' + this.state.user + '/' + this.state.password).then(data => {
       if (data.data === true) {
-          this.props.updateUser(this.state.user)
-          this.props.onClose();
+        this.props.updateUser(this.state.user)
+        this.props.onClose();
       }
       else
         this.setState({
@@ -30,35 +29,39 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <div className='custom-ui'>
-        <TextField
-          id="filled-full-width"
-          style={{ width: '80%' }}
-          placeholder="שם משתמש"
-          onChange={(event) => this.setState({ user: event.target.value })}
-          margin="normal"
-          variant="filled"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField
-          id="filled-full-width"
-          style={{ width: '80%' }}
-          placeholder="סיסמא"
-          onChange={(event) => this.setState({ password: event.target.value })}
-          margin="normal"
-          type="password"
-          variant="filled"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        {this.state.auth==='Failed'?<span>שם משתמש או סיסמא לא נכונים</span>:null}
+        <div>
 
-        <Button variant="contained" color="primary" onClick={() => this.login() }>
-          שלח
+          <TextField
+            id="filled-full-width"
+            style={{ width: '80%' }}
+            placeholder="שם משתמש"
+            onChange={(event) => this.setState({ user: event.target.value })}
+            margin="normal"
+            variant="filled"
+            InputLabelProps={{shrink: true}}
+          />
+          <TextField
+            id="filled-full-width"
+            style={{ width: '80%' }}
+            placeholder="סיסמא"
+            onChange={(event) => this.setState({ password: event.target.value })}
+            margin="normal"
+            type="password"
+            variant="filled"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+        {this.state.auth === 'Failed' ? <span style={{
+          color: 'red',
+          marginLeft: '4px'
+        }}>שם משתמש או סיסמא לא נכונים</span> : null}
+
+        <Button variant="contained" color="primary" onClick={() => this.login()} style={{ float: "right", marginRight: '90px' }}>
+          היכנס
           </Button>
-          <Button variant="contained" color="secondary" onClick={() => this.props.onClose()}>
+        <Button variant="contained" color="secondary" onClick={() => this.props.onClose()}>
           בטל
           </Button>
       </div>

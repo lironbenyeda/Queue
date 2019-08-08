@@ -30,11 +30,9 @@ class QuestionForm extends React.Component {
         return (
             <Paper >
                 <TextField
-                    error={this.state.question.length > 140 ? true : false}
-                    id="filled-full-width"
-                    label="שאל שאלה"
+                    error={this.state.question.length > 140 ? true : false}                   
                     style={{ width: '80%' }}
-                    placeholder=""
+                    placeholder="שאל שאלה"
                     onChange={(event) => this.setState({ question: event.target.value })}
                     margin="normal"
                     variant="filled"

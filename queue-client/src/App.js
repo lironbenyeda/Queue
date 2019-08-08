@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export const reduxStore = configureStore();
 const theme = createMuiTheme({
+  direction: 'rtl',
   props: {
     MuiTypography: {
       variantMapping: {
