@@ -10,9 +10,9 @@ const divStyle = {
 class SearchBar extends React.Component {
   handleSelect = eventKey => {
     this.props.changeScreen({
-      questions: eventKey == 'questions',
-      polls: eventKey == 'polls',
-      answered: eventKey == 'answers'
+      questions: eventKey === 'questions',
+      polls: eventKey ==='polls',
+      answered: eventKey === 'answers'
     })
   }
 
