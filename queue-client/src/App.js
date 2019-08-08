@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import configureStore from './reducers/store'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const reduxStore = configureStore();
 const theme = createMuiTheme({

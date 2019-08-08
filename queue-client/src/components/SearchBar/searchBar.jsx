@@ -1,53 +1,29 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 import { connect } from 'react-redux';
 import { changeScreen } from '../../actions/questionActions'
-const Bar = styled.div`
-    height: 50px;
-    background: lightblue;
 
-`
 class SearchBar extends React.Component {
+  handleSelect = eventKey => {
+    this.props.changeScreen({
+      questions: eventKey == 'questions',
+      polls: eventKey == 'polls',
+      answered: eventKey == 'answers'
+    })
+  }
 
-  showQuestionsOnly = () => {
-    this.props.changeScreen({
-      questions: true,
-      polls: false,
-      answered: false
-    })
-  }
-  showAnsweredOnly = () => {
-    this.props.changeScreen({
-      questions: false,
-      polls: false,
-      answered: true
-    })
-  }
-  showPollsOnly = () => {
-    this.props.changeScreen({
-      questions: false,
-      polls: true,
-      answered: false
-    })
-  }
   render() {
     return (
-      <Bar>
-        <Grid item>
-          <Button variant="contained" onClick={() => this.showQuestionsOnly()}>
-            שאלות
-          </Button>
-          <Button variant="contained" onClick={() => this.showPollsOnly()}>
-            סקרים
-          </Button>
-          <Button variant="contained" onClick={() => this.showAnsweredOnly()}>
-            תשובות
-          </Button>
-        </Grid>
-      </Bar>
+
+
+      <Tabs fill defaultActiveKey="questions" id="uncontrolled-tab-example" onSelect={this.handleSelect}>
+        <Tab eventKey="polls" title="סקרים"/>
+        <Tab eventKey="questions" title="שאלות"/>
+        <Tab eventKey="answers" title="שאלות שנענו"/>
+      </Tabs>
     );
   }
 
