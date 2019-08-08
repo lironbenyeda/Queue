@@ -7,6 +7,8 @@ import { updateQuestion } from '../../actions/questionActions'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
+import QuestionApi from '../../api/questionApi'
+import moment from 'moment';
 
 const QuestionsScreen = styled.div`
 background: white;
@@ -21,6 +23,7 @@ const removeAnsweredQuestion = (questions) => {
 const sortQuestionsByRank = (questions) => {
     return questions.sort((q1, q2) => q2.rank - q1.rank)
 }
+
 class Questions extends React.Component {
     constructor(props) {
         super(props)
@@ -32,8 +35,14 @@ class Questions extends React.Component {
         this.setState({ asking: false })
     }
     changeTime = (event) => {
-
-
+        if (event.target.value !== 'none')
+            QuestionApi.getByDate(moment().subtract(event.target.value, "days").format("YYYY-MM-DD")).then(data => {
+                this.props.updateQuestion(data)
+            })
+        else 
+        {
+            QuestionApi.getQuestions().then((data)=>this.props.updateQuestion(data))
+        }
     }
 
     handleSelect = eventKey => {
@@ -43,12 +52,12 @@ class Questions extends React.Component {
     render() {
 
         return (<QuestionsScreen>
-            <select onChange={() => this.changeTime()}>
+            <select onChange={(event) => this.changeTime(event)}>
                 <option value={'none'}>סנן זמן</option>
-                <option value={'today'}>היום</option>
-                <option value={'week'}>השבוע</option>
-                <option value={'month'}>החודש</option>
-                <option value={'year'}>השנה</option>
+                <option value={'1'}>היום</option>
+                <option value={'7'}>השבוע</option>
+                <option value={'30'}>החודש</option>
+                <option value={'365'}>השנה</option>
             </select>
             <button onClick={() => this.setState({ asking: true })}>שאל</button>
 
@@ -77,7 +86,8 @@ const mapStateToProps = state => ({
     questions: removeAnsweredQuestion(state.questions)
 });
 const mapDispatchToProps = dispatch => ({
-    askQuestion: question => dispatch(updateQuestion(question))
+    updateQuestion: question => dispatch(updateQuestion(question)),
+
 });
 
 

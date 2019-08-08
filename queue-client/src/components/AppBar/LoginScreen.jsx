@@ -3,7 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
-
+import Button from '@material-ui/core/Button';
+import { updateUser } from '../../actions/questionActions'
+import axios from 'axios'
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -13,7 +15,18 @@ class LoginScreen extends React.Component {
       password: ''
     }
   }
-
+  login = () => {
+    axios.get('http://129.213.134.160/users/' + this.state.user + '/' + this.state.password).then(data => {
+      if (data.data === true) {
+          this.props.updateUser(this.state.user)
+          this.props.onClose();
+      }
+      else
+        this.setState({
+          auth: 'Failed'
+        })
+    })
+  }
   render() {
     return (
       <div className='custom-ui'>
@@ -32,7 +45,7 @@ class LoginScreen extends React.Component {
           id="filled-full-width"
           style={{ width: '80%' }}
           placeholder="סיסמא"
-          onChange={(event) => this.setState({ user: event.target.value })}
+          onChange={(event) => this.setState({ password: event.target.value })}
           margin="normal"
           type="password"
           variant="filled"
@@ -40,15 +53,14 @@ class LoginScreen extends React.Component {
             shrink: true,
           }}
         />
-        <button onClick={() => this.props.onClose()}>No</button>
-        <button
-          onClick={() => {
-            this.handleClickDelete();
-            this.props.onClose();
-          }}
-        >
-          Yes, Delete it!
-        </button>
+        {this.state.auth==='Failed'?<span>שם משתמש או סיסמא לא נכונים</span>:null}
+
+        <Button variant="contained" color="primary" onClick={() => this.login() }>
+          שלח
+          </Button>
+          <Button variant="contained" color="secondary" onClick={() => this.props.onClose()}>
+          בטל
+          </Button>
       </div>
     );
   }
@@ -58,7 +70,7 @@ const mapStateToProps = state => ({
   state: state
 });
 const mapDispatchToProps = dispatch => ({
-  
+  updateUser: user => dispatch(updateUser(user))
 });
 
 

@@ -3,8 +3,9 @@ import PollForm from './pollForm'
 import Poll from './poll'
 import styled from 'styled-components';
 import PollsApi from '../../api/pollsApi';
-import {connect} from 'react-redux';
-import {updatePolls} from '../../actions/questionActions'
+import { connect } from 'react-redux';
+import { updatePolls } from '../../actions/questionActions'
+import moment from 'moment'
 
 const Div = styled.div`
 background: white;
@@ -21,51 +22,56 @@ class PollsScreen extends React.Component {
         super(props)
         this.state = {
             asking: false,
-            polls:this.props.polls
+            polls: this.props.polls
         }
     }
-   UNSAFE_componentWillReceiveProps(newProps){
+    UNSAFE_componentWillReceiveProps(newProps) {
         console.table(newProps.polls[2].answers)
-       this.setState({
-           polls:newProps.polls
-       })
-   }
+        this.setState({
+            polls: newProps.polls
+        })
+    }
     pollSent = () => {
-        //todo get all then
-        PollsApi.getPolls().then((data)=>{
+        PollsApi.getPolls().then((data) => {
             this.setState({
                 asking: false,
-                polls:data
+                polls: data
             })
         })
-       
-      }
-      changeTime=()=>{
-          
+
+    }
+    changeTime = (event) => {
+        if (event.target.value !== 'none')
+            PollsApi.getByDate(moment().subtract(event.target.value, "days").format("YYYY-MM-DD")).then(data => {
+                this.props.updatePolls(data)
+            })
+        else {
+            PollsApi.getPolls().then((data) => this.props.updatePolls(data))
+        }
     }
     render() {
-        
+
         return (<Div>
-             <select onChange={()=>this.changeTime()}>               
+            <select onChange={(event) => this.changeTime(event)}>
                 <option value={'none'}>סנן זמן</option>
-                <option value={'today'}>היום</option>
-                <option value={'week'}>השבוע</option>
-                <option value={'month'}>החודש</option>
-                <option value={'year'}>השנה</option>
+                <option value={'1'}>היום</option>
+                <option value={'7'}>השבוע</option>
+                <option value={'30'}>החודש</option>
+                <option value={'365'}>השנה</option>
             </select>
             <button onClick={() => this.setState({ asking: true })}>הוסף סקר</button>
             {this.state.asking ? <PollForm pollSent={() => this.pollSent()}></PollForm> : null}
             <div style={{ 'marginTop': '5%' }}>
                 {this.state.polls && this.state.polls.length > 0 ?
                     sortPollsBySum(this.state.polls).map((poll, index) => {
-                        return (<Poll key={index} poll={poll} updatePoll={(poll)=>{
-                            const newPolls = this.state.polls.map((pollNoNeeded,indexToReplace)=>{
-                                if(index===indexToReplace)
+                        return (<Poll key={index} poll={poll} updatePoll={(poll) => {
+                            const newPolls = this.state.polls.map((pollNoNeeded, indexToReplace) => {
+                                if (index === indexToReplace)
                                     return poll
                                 return pollNoNeeded
-                            })                            
+                            })
                             this.props.updatePolls(newPolls)
-                            
+
                         }} />)
                     })
                     : null}
@@ -75,11 +81,11 @@ class PollsScreen extends React.Component {
 }
 const mapStateToProps = state => ({
     polls: state.polls
-  });
-  const mapDispatchToProps = dispatch => ({
-    updatePolls :polls => dispatch(updatePolls(polls))  
-  });
-  
-  
+});
+const mapDispatchToProps = dispatch => ({
+    updatePolls: polls => dispatch(updatePolls(polls))
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(PollsScreen)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(PollsScreen)

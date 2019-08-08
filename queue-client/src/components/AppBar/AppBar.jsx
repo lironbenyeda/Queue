@@ -7,7 +7,7 @@ import LoginScreen from './LoginScreen'
 import { Provider } from 'react-redux'
 import {reduxStore} from '../../App'
 import Button from 'react-bootstrap/Button'
-
+import {connect} from 'react-redux'
 const AppBanner = styled.div`
     height: 120px;
     background: white;
@@ -16,6 +16,7 @@ const AppBanner = styled.div`
 class AppBar extends React.Component {
 
   render() {
+  
     return (
       <AppBanner>
         <span style={{'font-size': "70px",'font-family': "cursive"}}>Queue</span>
@@ -29,13 +30,19 @@ class AppBar extends React.Component {
               );
             }
           })
-        }>היכנס</Button>
-
-       
+        }>{this.props.userName !== ''? this.props.userName:'היכנס'}</Button>
       </AppBanner>
     );
   }
 
 }
+const mapStateToProps = state => ({
+  userName: state.userName
+});
+const mapDispatchToProps = dispatch => ({
+  
+});
 
-export default AppBar;
+
+
+export default connect(mapStateToProps,mapDispatchToProps)( AppBar);
