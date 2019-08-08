@@ -61,7 +61,7 @@ class Questions extends React.Component {
             </select>
             <button onClick={() => this.setState({ asking: true })}>שאל</button>
 
-            <DropdownButton id="dropdown-basic-button" style={{background:"red"}} title="סנן זמן" onSelect={this.handleSelect}>
+            <DropdownButton id="dropdown-basic-button" title="סנן זמן" onSelect={this.handleSelect}>
                 <Dropdown.Item eventKey={'today'}>היום</Dropdown.Item>
                 <Dropdown.Item eventKey={'week'}>השבוע</Dropdown.Item>
                 <Dropdown.Item eventKey={'month'}>החודש</Dropdown.Item>
