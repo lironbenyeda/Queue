@@ -3,7 +3,8 @@ import QuestionForm from './questionForm'
 import Question from './Question';
 import styled from 'styled-components';
 import QuestionApi from '../../api/questionApi'
-
+import {connect} from 'react-redux';
+import {updateQuestion} from '../../actions/questionActions'
 const QuestionsScreen = styled.div`
 background: white;
 width:80%;
@@ -11,6 +12,9 @@ margin:auto;
 height: -webkit-fill-available;
 padding-top:3%
 `
+const removeAnsweredQuestion =(questions)=>{
+    return questions.filter(question=> question.isAnswered===false)
+  }
 const sortQuestionsByRank = (questions) => {
     return questions.sort((q1, q2) => q2.rank - q1.rank)
 }
@@ -25,8 +29,7 @@ class Questions extends React.Component {
     }
     questionSent = () => {
         //todo get all then
-        this.setState({ asking: false })
-        this.props.reload()
+        this.setState({ asking: false })        
     }
     changeTime = (event) => {
        
@@ -47,20 +50,21 @@ class Questions extends React.Component {
 
             <div style={{ 'marginTop': '5%' }}>
 
-                {this.state.questions && this.state.questions.length > 0 ?
-                    sortQuestionsByRank(this.state.questions).map((question, index) => {
-                        return (<Question key={index} question={question} updateRank={()=>{
-                            const newQuestions = this.state.questions;
-                            
-                            this.setState({
-                                question:newQuestions
-                            })
-                        }} />)
+                {this.props.questions && this.props.questions.length > 0 ?
+                    sortQuestionsByRank(this.props.questions).map((question, index) => {
+                        return (<Question key={index} question={question} />)
                     })
                     : null}
             </div>
         </QuestionsScreen>)
     }
 }
-
-export default Questions
+const mapStateToProps = state => ({
+    questions: removeAnsweredQuestion(state.questions)
+  });
+  const mapDispatchToProps = dispatch => ({
+    askQuestion: question => dispatch(updateQuestion(question))  
+  });
+  
+  
+export default connect(mapStateToProps,mapDispatchToProps)(Questions)

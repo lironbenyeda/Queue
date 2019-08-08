@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { connect } from 'react-redux'
 import AnsweredQuestion from './AnsweredQuestion';
 import styled from 'styled-components';
 const QuestionsScreen = styled.div`
@@ -12,6 +12,9 @@ padding-top:3%
 const sortQuestionsByRank = (questions) => {
     return questions.sort((q1, q2) => q2.rank - q1.rank)
 }
+const onlyAnsweredQuestion = (questions) => {
+    return questions.filter(question => question.isAnswered === true)
+}
 class AnsweredQuestions extends React.Component {
     constructor(props) {
         super(props)
@@ -19,17 +22,12 @@ class AnsweredQuestions extends React.Component {
             asking: false
         }
     }
-    questionSent = () => {
-        //todo get all then
-        this.setState({ asking: false })
-      }
-      changeTime=()=>{
-          
-      }
-    render() {
+    changeTime = () => {
 
+    }
+    render() {
         return (<QuestionsScreen>
-            <select onChange={()=>this.changeTime()}>               
+            <select onChange={() => this.changeTime()}>
                 <option value={'none'}>סנן זמן</option>
                 <option value={'today'}>היום</option>
                 <option value={'week'}>השבוע</option>
@@ -40,11 +38,18 @@ class AnsweredQuestions extends React.Component {
                 {this.props.questions && this.props.questions.length > 0 ?
                     sortQuestionsByRank(this.props.questions).map((question, index) => {
                         return (<AnsweredQuestion key={index} question={question} />)
-                    })
-                    : null}
+                    }) : null}
+
             </div>
         </QuestionsScreen>)
     }
 }
+const mapStateToProps = state => ({
+    questions: onlyAnsweredQuestion(state.questions)
+});
+const mapDispatchToProps = dispatch => ({
 
-export default AnsweredQuestions
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnsweredQuestions)
