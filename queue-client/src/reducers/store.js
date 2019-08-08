@@ -9,8 +9,8 @@ export const initialState = {
     polls: [],
     userName: '',
     screenSetting: {
-        question: false,
-        polls: true,
+        questions: true,
+        polls: false,
         answered: false
 
     }

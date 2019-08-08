@@ -6,9 +6,11 @@ import { confirmAlert } from 'react-confirm-alert';
 import LoginScreen from './LoginScreen'
 import { Provider } from 'react-redux'
 import {reduxStore} from '../../App'
+import Button from 'react-bootstrap/Button'
+
 const AppBanner = styled.div`
-    height: 80px;
-    background: lightgray;
+    height: 120px;
+    background: white;
     font-size: xx-large;
 `
 class AppBar extends React.Component {
@@ -16,8 +18,8 @@ class AppBar extends React.Component {
   render() {
     return (
       <AppBanner>
-        <span>Queue</span>
-        <button onClick={() =>
+        <span style={{'font-size': "70px",'font-family': "cursive"}}>Queue</span>
+        <Button variant="light" size="sm" style={{float: "left",position: "relative",margin: "1%"}} onClick={() =>
           confirmAlert({
             customUI: ({ onClose }) => {
               return (
@@ -27,7 +29,9 @@ class AppBar extends React.Component {
               );
             }
           })
-        }>היכנס</button>
+        }>היכנס</Button>
+
+       
       </AppBanner>
     );
   }

@@ -1,11 +1,12 @@
 
 import React from 'react';
-import styled from 'styled-components';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { connect } from 'react-redux';
 import { changeScreen } from '../../actions/questionActions'
-
+const divStyle = {
+  color: 'red'
+};
 class SearchBar extends React.Component {
   handleSelect = eventKey => {
     this.props.changeScreen({
@@ -15,12 +16,12 @@ class SearchBar extends React.Component {
     })
   }
 
+  
+
   render() {
     return (
-
-
       <Tabs fill defaultActiveKey="questions" id="uncontrolled-tab-example" onSelect={this.handleSelect}>
-        <Tab eventKey="polls" title="סקרים"/>
+        <Tab eventKey="polls" title="סקרים" style={divStyle}/>
         <Tab eventKey="questions" title="שאלות"/>
         <Tab eventKey="answers" title="שאלות שנענו"/>
       </Tabs>

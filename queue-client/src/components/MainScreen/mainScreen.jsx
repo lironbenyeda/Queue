@@ -10,7 +10,6 @@ import AnsweredQuestions from '../AnsweredScreen/AnsweredScreen';
 import {updatePolls, updateQuestion} from '../../actions/questionActions'
 const Background = styled.div`
 height: -webkit-fill-available;
-background: #476771;
 `
 
 
